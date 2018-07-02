@@ -5,6 +5,7 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Build Stage'
+        sh 'python setup.py sdist --formats=gztar'
       }
     }
 
@@ -12,6 +13,11 @@ pipeline {
       steps {
         echo 'Test Stage'
       }
+    }
+
+    stage('Package') {
+      echo 'Docker Package Stage'
+      
     }
 
     stage('Deploy') {
