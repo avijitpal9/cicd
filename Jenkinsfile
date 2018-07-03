@@ -36,7 +36,10 @@ pipeline {
     stage('Deploy') {
       steps {
         echo 'Deploy Stage'
-        sh "kubectl apply -f k8s/deployment.yaml"
+        sh """
+        sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
+        kubectl apply -f k8s/deployment.yaml
+        """
       }
     }
 
