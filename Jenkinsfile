@@ -23,12 +23,11 @@ pipeline {
         echo 'Docker Build & Publish Stage'
 
         script {
-          docker.withRegistry('https://hub.docker.com/', 'avijit-dockerhub') {
-          def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}")
-          customImage.push()
-          customImage.push('latest')
-        }
-
+           docker.withRegistry('https://docker.io/', 'avijit-dockerhub') {
+           def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}")
+           customImage.push()
+           customImage.push('latest')
+         }
         }
 
       }
