@@ -36,6 +36,7 @@ pipeline {
     stage('Deploy') {
       steps {
         echo 'Deploy Stage'
+        sh "kubectl apply -f k8s/deployment.yaml"
       }
     }
 
