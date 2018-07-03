@@ -8,11 +8,11 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: myapp
+    name: myapp-deployment
     namespace: development
     labels:
         app: myapp
-        version: 0.1
+        app-version: 0.1
 spec:
     replicas: 3
     selector:
@@ -22,7 +22,7 @@ spec:
         metadata:
             labels:
                 app: myapp
-                version: 0.1
+                app-version: 0.1
         spec:
             containers:
                 - name: myapp
@@ -45,4 +45,4 @@ spec:
         - protocol: TCP
           port: 5000
           targetPort: 5000
-          nodePort: 5000
+          nodePort: 35000
