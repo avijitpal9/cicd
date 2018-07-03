@@ -16,8 +16,9 @@ pipeline {
     }
 
     stage('Package') {
-      echo 'Docker Package Stage'
-      
+      steps {
+        echo 'Docker Package Stage'
+      }
     }
 
     stage('Deploy') {
