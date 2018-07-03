@@ -15,9 +15,22 @@ pipeline {
       }
     }
 
-    stage('Package') {
+    stage('Build & Publish Image') {
+      when {
+        branch 'master'
+      }
       steps {
-        echo 'Docker Package Stage'
+        echo 'Docker Build & Publish Stage'
+
+        script {
+          docker.withRegistry('https://hub.docker.com/', 'avijit-dockerhub') {
+          def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}")
+          customImage.push()
+          customImage.push('latest')
+        }
+
+        }
+
       }
     }
 
