@@ -9,11 +9,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: myapp
-    namesapce: development
+    namespace: development
     labels:
         app: myapp
         version: 0.1
-    namespace: default
 spec:
     replicas: 3
     selector:
@@ -35,7 +34,7 @@ apiVersion: v1
 kind: Service
 metadata:
     name: myapp-svc
-    namesapce: development
+    namespace: development
     labels:
         name: myapp-svc
 spec:
