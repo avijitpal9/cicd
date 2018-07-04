@@ -17,16 +17,22 @@ pipeline {
 
     stage('Build & Publish Image') {
       when {
-        branch 'master'
+        anyof { branch 'master'; branch 'development' }
       }
       steps {
         echo 'Docker Build & Publish Stage'
 
         script {
-           docker.withRegistry('https://index.docker.io/v1/', 'avijit-dockerhub') {
-           def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}")
-           customImage.push()
-           customImage.push('latest')
+              if (env.BRANCH_NAME == 'master') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'avijit-dockerhub') {
+                    def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}-dev")
+                    customImage.push()
+              } else if  (env.BRANCH_NAME == 'development') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'avijit-dockerhub') {
+                    def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}")
+                    customImage.push()
+                    customImage.push('latest')
+              }
          }
         }
 
@@ -34,12 +40,26 @@ pipeline {
     }
 
     stage('Deploy') {
+      when {
+        anyof { branch 'master'; branch 'development' }
+      }
+
       steps {
         echo 'Deploy Stage'
-        sh """
-        sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
-        kubectl apply -f k8s/deployment.yaml
-        """
+        script {
+          if (env.BRANCH_NAME == 'master') {
+            sh """
+            sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
+            kubectl apply -f k8s/deployment-master.yaml
+            """
+          } else if (env.BRANCH_NAME == 'development') {
+            sh """
+            sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
+            kubectl apply -f k8s/deployment-dev.yaml
+            """
+          }
+        }
+        }
       }
     }
 
