@@ -50,12 +50,12 @@ pipeline {
         script {
          if (env.BRANCH_NAME == 'master') {
            sh """
-           sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
+           sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment-master.yaml
            kubectl apply -f k8s/deployment-master.yaml
            """
          } else if (env.BRANCH_NAME == 'development') {
            sh """
-           sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
+           sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment-dev.yaml
            kubectl apply -f k8s/deployment-dev.yaml
            """
          }
