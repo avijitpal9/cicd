@@ -38,11 +38,27 @@ metadata:
     labels:
         name: myapp-svc
 spec:
-    type: NodePort
+    type: ClusterIP
     selector:
         app: myapp
     ports:
         - protocol: TCP
           port: 5000
           targetPort: 5000
-          nodePort: 30000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: myapp-ingress
+    namespace: development
+    annotations:
+         nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+    rules:
+        - host: myapp-development.internal.com
+          http:
+            paths:
+                - path: /
+                  backend:
+                      serviceName: myapp-svc
+                      servicePort: 5000
