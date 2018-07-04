@@ -17,7 +17,7 @@ pipeline {
 
     stage('Build & Publish Image') {
       when {
-        anyof { branch 'master'; branch 'development' }
+        anyOf { branch 'master'; branch 'development' }
       }
       steps {
         echo 'Docker Build & Publish Stage'
@@ -35,33 +35,21 @@ pipeline {
                     customImage.push('latest')
                     }
               }
-         }
+           }
         }
-
-      }
     }
 
     stage('Deploy') {
       when {
-        anyof { branch 'master'; branch 'development' }
+        anyOf { branch 'master'; branch 'development' }
       }
 
       steps {
         echo 'Deploy Stage'
-        script {
-          if (env.BRANCH_NAME == 'master') {
-            sh """
+        sh """
             sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
-            kubectl apply -f k8s/deployment-master.yaml
+            kubectl apply -f k8s/deployment.yaml
             """
-          } else if (env.BRANCH_NAME == 'development') {
-            sh """
-            sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment.yaml
-            kubectl apply -f k8s/deployment-dev.yaml
-            """
-          }
-        }
-        }
       }
     }
 
