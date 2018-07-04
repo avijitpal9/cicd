@@ -27,11 +27,13 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', 'avijit-dockerhub') {
                     def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}-dev")
                     customImage.push()
+                    }
               } else if  (env.BRANCH_NAME == 'development') {
                     docker.withRegistry('https://index.docker.io/v1/', 'avijit-dockerhub') {
                     def customImage = docker.build("avijitpal9/myapp:${env.BUILD_ID}")
                     customImage.push()
                     customImage.push('latest')
+                    }
               }
          }
         }
