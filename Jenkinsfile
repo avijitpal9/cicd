@@ -17,7 +17,7 @@ pipeline {
 
     stage('Build & Publish Image') {
       when {
-        anyof { branch 'master'; branch 'development' }
+        anyOf { branch 'master'; branch 'development' }
       }
       steps {
         echo 'Docker Build & Publish Stage'
@@ -42,7 +42,7 @@ pipeline {
 
     stage('Deploy') {
       when {
-        anyof { branch 'master'; branch 'development' }
+        anyOf { branch 'master'; branch 'development' }
       }
 
       steps {
