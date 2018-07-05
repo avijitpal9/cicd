@@ -54,7 +54,7 @@ pipeline {
            """
          } else if (env.BRANCH_NAME == 'development') {
            sh """
-           sed -i "s/myapp:latest/myapp:${env.BUILD_ID}/g" k8s/deployment-dev.yaml
+           sed -i "s/myapp:latest/myapp:${env.BUILD_ID}-dev/g" k8s/deployment-dev.yaml
            kubectl apply -f k8s/deployment-dev.yaml
            """
          }
