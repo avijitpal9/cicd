@@ -55,7 +55,7 @@ metadata:
          nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
     rules:
-        - host: myapp-development.internal.com
+        - host: myapp-dev.internal.com
           http:
             paths:
                 - path: /
